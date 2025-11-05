@@ -4,6 +4,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 
 // === PÁGINAS PÚBLICAS ===
 import LoginPage from "../screens/auth/login";
+import Dashboard from "../screens/dashboard";
 
 
 export default function AppRoutes() {
@@ -11,6 +12,14 @@ export default function AppRoutes() {
         <Routes>
             {/* RUTAS PÚBLICAS */}
             <Route path="/login" element={<LoginPage />} />
+            <Route
+                path="/dashboard"
+                element={
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<div className="p-10 text-center text-4xl">404 - Page not found</div>} />
         </Routes>
