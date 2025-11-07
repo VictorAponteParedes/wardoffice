@@ -1,24 +1,24 @@
 {
     "Members": {
         "title": "Lista de Miembros",
-        "subtitle": "Gestiona los miembros de tu barrio",
-        "searchPlaceholder": "Buscar por nombre o email...",
-        "filterActive": "Activos",
-        "filterInactive": "Inactivos",
-        "filterAll": "Todos",
-        "addButton": "Agregar Miembro",
-        "editButton": "Editar",
-        "deleteButton": "Eliminar",
-        "nameLabel": "Nombre",
-        "emailLabel": "Email",
-        "statusLabel": "Estatus",
-        "lastTalkLabel": "Último Discurso",
+        "subtitle": "Gestiona los miembros de tu barrio con amor",
+        "searchPlaceholder": "Buscar por nombre, email o llamado...",
+        "filterName": "Nombre",
+        "filterStatus": "Estatus",
+        "filterLastTalk": "Último discurso (meses)",
+        "filterCalling": "Llamado",
+        "buttonAdd": "Agregar Miembro",
+        "buttonReset": "Limpiar filtros",
+        "count": "miembros encontrados",
         "noResults": "No se encontraron miembros",
-        "loading": "Cargando...",
-        "successAdd": {
-            "title": "Miembro agregado",
-            "subtitle": "El miembro se ha agregado exitosamente"
-        },
-        "error": "Ocurrió un error al cargar los miembros"
+        "noMembers": "No hay miembros registrados",
+        "loading": "Cargando miembros...",
+        "error": "Error al cargar miembros",
+        "statusActive": "Activo",
+        "statusInactive": "Inactivo",
+        "neverSpoke": "Nunca ha hablado",
+        "monthsAgo": "hace {{months}} meses",
+        "cardEdit": "Editar",
+        "cardView": "Ver Detalles"
     }
 }

@@ -5,4 +5,5 @@ export interface Member {
     status: 'active' | 'inactive';
     lastTalk: string;
     calling: string;
+    photo: string;
 }
