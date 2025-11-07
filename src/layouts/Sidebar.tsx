@@ -19,6 +19,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useAuth } from "../store/authStore";
 import { translate } from "../lang";
+import { RoutesView } from "../navigation/routes";
 
 const Routes = {
     dashboard: "/dashboard",
@@ -116,7 +117,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                                     exit={{ height: 0, opacity: 0 }}
                                     className="pl-12 space-y-2"
                                 >
-                                    <Link to={Routes.members} className="block py-2 text-sm hover:text-yellow-300">
+                                    <Link to={RoutesView.memberList} className="block py-2 text-sm hover:text-yellow-300">
                                         {translate("Sidebar.membersAll")}
                                     </Link>
                                     <Link to={Routes.attendance} className="block py-2 text-sm hover:text-yellow-300">
@@ -208,7 +209,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                             <Link to={Routes.dashboard} title={translate("Sidebar.dashboard")}>
                                 <LayoutDashboard className="w-6 h-6 hover:text-yellow-300" />
                             </Link>
-                            <Link to={Routes.members} title={translate("Sidebar.members")}>
+                            <Link to={RoutesView.memberList} title={translate("Sidebar.members")}>
                                 <Users className="w-6 h-6 hover:text-yellow-300" />
                             </Link>
                             <Link to={Routes.assignTalk} title={translate("Sidebar.assignTalk")}>

@@ -1,0 +1,24 @@
+{
+    "Members": {
+        "title": "Lista de Miembros",
+        "subtitle": "Gestiona los miembros de tu barrio",
+        "searchPlaceholder": "Buscar por nombre o email...",
+        "filterActive": "Activos",
+        "filterInactive": "Inactivos",
+        "filterAll": "Todos",
+        "addButton": "Agregar Miembro",
+        "editButton": "Editar",
+        "deleteButton": "Eliminar",
+        "nameLabel": "Nombre",
+        "emailLabel": "Email",
+        "statusLabel": "Estatus",
+        "lastTalkLabel": "Último Discurso",
+        "noResults": "No se encontraron miembros",
+        "loading": "Cargando...",
+        "successAdd": {
+            "title": "Miembro agregado",
+            "subtitle": "El miembro se ha agregado exitosamente"
+        },
+        "error": "Ocurrió un error al cargar los miembros"
+    }
+}

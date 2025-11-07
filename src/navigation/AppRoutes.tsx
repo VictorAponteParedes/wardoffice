@@ -9,6 +9,7 @@ import NotFound from "../screens/errors";
 
 // === PÁGINAS PRIVADAS (protegidas) ===
 import Dashboard from "../screens/dashboard";
+import MembersList from "../screens/members/MembersList";
 
 export default function AppRoutes() {
     return (
@@ -16,12 +17,20 @@ export default function AppRoutes() {
             {/* RUTA PÚBLICA: Login */}
             <Route path={RoutesView.login} element={<LoginPage />} />
 
-            {/* RUTA PROTEGIDA: Dashboard */}
+            {/* RUTA PROTEGIDA */}
             <Route
                 path={RoutesView.dashboard}
                 element={
                     <ProtectedRoute>
                         <Dashboard />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={RoutesView.memberList}
+                element={
+                    <ProtectedRoute>
+                        <MembersList />
                     </ProtectedRoute>
                 }
             />
