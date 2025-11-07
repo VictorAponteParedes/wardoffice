@@ -1,0 +1,17 @@
+{
+    "Sidebar": {
+        "title": "Ward BackOffice",
+        "wardPlaceholder": "Provo 5th Ward",
+        "dashboard": "Dashboard",
+        "members": "Miembros",
+        "membersAll": "→ Todos los Miembros",
+        "attendance": "→ Asistencia",
+        "talks": "Discursos",
+        "talksSchedule": "→ Programación",
+        "assignTalk": "Asignación Aleatoria",
+        "callings": "Llamamientos",
+        "events": "Eventos",
+        "settings": "Configuración",
+        "signOut": "Cerrar Sesión"
+    }
+}

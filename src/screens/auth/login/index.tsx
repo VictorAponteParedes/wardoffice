@@ -8,10 +8,9 @@ import { Church, Sun, Sparkles } from "lucide-react";
 import { TextInput } from "../../../components/TextInput";
 import { PasswordInput } from "../../../components/PasswordInput";
 import { MessageToast } from "../../../components/MessageToast";
-
-// ← TUS IMPORTS ORIGINALES (intocables)
-import sudBackground from "../../../assets/images/temploFondo.jfif";
-import sudLogo from "../../../assets/images/temploFondo.jfif";
+import { translate } from "../../../lang";
+import { RoutesView } from "../../../navigation/routes";
+import { sudLogo, sudBackground } from "../../../assets/index";
 
 interface LoginFormData {
     email: string;
@@ -40,22 +39,22 @@ export default function LoginPage() {
             if (success) {
                 setMessage({
                     type: "success",
-                    title: "Welcome back!",
-                    description: "Redirecting to your ward dashboard...",
+                    title: translate("Login.messageSuccess.title"),
+                    description: translate("Login.messageSuccess.subtitle"),
                 });
-                setTimeout(() => navigate("/dashboard", { replace: true }), 2000);
+                setTimeout(() => navigate(RoutesView.dashboard, { replace: true }), 2000);
             } else {
                 setMessage({
                     type: "error",
-                    title: "Access denied",
-                    description: "Try bishop@ward.org / jesus123",
+                    title: translate("Login.messageError.title"),
+                    description: translate("Login.messageError.subtitle"),
                 });
             }
         } catch (err) {
             setMessage({
                 type: "error",
-                title: "Connection error",
-                description: "Please try again in a few seconds.",
+                title: translate("Login.errorGeneric"),
+                description: translate("Login.errorGeneric"),
             });
         } finally {
             setIsLoading(false);
@@ -79,7 +78,6 @@ export default function LoginPage() {
                         filter: "brightness(0.92) contrast(1.05) saturate(1.1)",
                     }}
                 />
-                {/* Solo UNA capa ligera → templo visible */}
                 <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-white/30" />
             </div>
 
@@ -128,28 +126,32 @@ export default function LoginPage() {
                         <div className="max-w-md mx-auto">
                             <div className="text-center mb-10">
                                 <Church className="w-14 h-14 text-blue-700 mx-auto mb-4" />
-                                <h2 className="text-4xl font-bold text-gray-800">Sign in</h2>
-                                <p className="text-gray-600 mt-2">Enter your ward credentials</p>
+                                <h2 className="text-4xl font-bold text-gray-800">
+                                    {translate("Login.title")}
+                                </h2>
+                                <p className="text-gray-600 mt-2">
+                                    {translate("Login.subtitle")}
+                                </p>
                             </div>
 
                             <FormProvider {...methods}>
                                 <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
                                     <TextInput
                                         name="email"
-                                        label="Email"
+                                        label={translate("Login.emailLabel")}
                                         type="email"
-                                        placeholder="bishop@ward.org"
+                                        placeholder={translate("Login.emailPlaceholder")}
                                     />
                                     <PasswordInput
                                         name="password"
-                                        label="Password"
-                                        placeholder="••••••••"
+                                        label={translate("Login.passwordLabel")}
+                                        placeholder={translate("Login.passwordPlaceholder")}
                                         showEyes
                                     />
 
                                     <div className="flex justify-end">
                                         <a href="/forgot-password" className="text-sm text-blue-600 hover:underline font-medium">
-                                            Forgot password?
+                                            {translate("Login.forgotPassword")}
                                         </a>
                                     </div>
 
@@ -160,7 +162,7 @@ export default function LoginPage() {
                                         disabled={isLoading}
                                         className="w-full bg-blue-700 text-white py-4 rounded-full font-bold text-lg shadow-xl hover:bg-blue-800 transition disabled:opacity-60"
                                     >
-                                        {isLoading ? "Entering..." : "Enter BackOffice"}
+                                        {isLoading ? translate("Login.loading") : translate("Login.buttonSubmit")}
                                     </motion.button>
                                 </form>
                             </FormProvider>
