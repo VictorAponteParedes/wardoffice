@@ -2,6 +2,7 @@ import Login from './es/login.json';
 import PageNotFound from './es/PageNotFount.json';
 import Sidebar from './es/sidebar.json';
 import Members from './es/members.json';
+import CreateMember from './es/CreateMember.json';
 // Definir el idioma actual, por ejemplo, 'es' para español
 const currentLanguage = 'es';
 
@@ -13,6 +14,7 @@ const translations = {
         ...PageNotFound,
         ...Sidebar,
         ...Members,
+        ...CreateMember,
     },
 
 };

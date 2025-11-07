@@ -10,6 +10,7 @@ import NotFound from "../screens/errors";
 // === PÁGINAS PRIVADAS (protegidas) ===
 import Dashboard from "../screens/dashboard";
 import MembersList from "../screens/members/MembersList";
+import CreateMember from "../screens/members/CreateMember";
 
 export default function AppRoutes() {
     return (
@@ -31,6 +32,14 @@ export default function AppRoutes() {
                 element={
                     <ProtectedRoute>
                         <MembersList />
+                    </ProtectedRoute>
+                }
+            />
+            <Route
+                path={RoutesView.memberCreate}
+                element={
+                    <ProtectedRoute>
+                        <CreateMember />
                     </ProtectedRoute>
                 }
             />

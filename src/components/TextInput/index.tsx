@@ -1,40 +1,63 @@
+// src/components/form/TextInput.tsx
 import { useFormContext } from "react-hook-form";
+import { useTheme } from "../../context/ThemeContext";
 import type { TextInputProps } from "../../types/inputs";
+import type { LucideIcon } from "lucide-react";
+
+interface Props extends TextInputProps {
+    icon?: LucideIcon;
+}
 
 export const TextInput = ({
     name,
     label,
     placeholder,
     type = "text",
-    isDark,
+    icon: Icon,
     ...rest
-}: TextInputProps) => {
+}: Props) => {
+    const { isDark } = useTheme();
     const {
         register,
         formState: { errors },
     } = useFormContext();
 
     return (
-        <div className="mb-4">
+        <div className="space-y-1">
             <label
-                className={`block mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}
+                className={`block text-sm font-medium ${isDark ? "text-gray-300" : "text-gray-700"
+                    }`}
             >
                 {label}
             </label>
-            <input
-                type={type}
-                placeholder={placeholder}
-                {...register(name)}
-                {...rest}
-                className={`w-full px-3 py-2 border rounded-md ${isDark
-                    ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                    : "bg-white border-gray-300 text-gray-800"
-                    }`}
-            />
+            <div className="relative">
+                {Icon && (
+                    <Icon
+                        className={`absolute left-3 top-1/2 -translate-y-1/2 ${isDark ? "text-blue-400" : "text-blue-600"
+                            }`}
+                        size={18}
+                    />
+                )}
+                <input
+                    type={type}
+                    placeholder={placeholder}
+                    {...register(name)}
+                    {...rest}
+                    className={`w-full ${Icon ? "pl-10" : "pl-3"
+                        } pr-3 py-2.5 border rounded-lg text-sm transition-all duration-200
+            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+            ${errors[name]
+                            ? "border-red-500"
+                            : isDark
+                                ? "border-gray-600 bg-gray-700 text-white placeholder-gray-400"
+                                : "border-gray-300 bg-white text-gray-900"
+                        }`}
+                />
+            </div>
             {errors[name] && (
-                <span className="text-red-500 text-sm">
-                    {(errors[name] as any).message}
-                </span>
+                <p className="text-xs text-red-500 mt-1">
+                    {(errors[name] as any).message || "Campo requerido"}
+                </p>
             )}
         </div>
     );

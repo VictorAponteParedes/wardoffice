@@ -1,0 +1,49 @@
+{
+    "CreateMember": {
+        "title": "Registrar Nuevo Miembro",
+        "button": {
+            "submit": "Crear Miembro"
+        },
+        "message": {
+            "success": {
+                "title": "¡Bienvenido al barrio!",
+                "description": "El miembro ha sido registrado con éxito."
+            },
+            "error": {
+                "title": "Error",
+                "description": "No se pudo crear el miembro."
+            }
+        },
+        "fields": {
+            "titleGeneralInfo": "Información Personal",
+            "image": {
+                "label": "Foto del Miembro"
+            },
+            "name": {
+                "label": "Nombre Completo",
+                "placeholder": "Juan Pérez Gómez"
+            },
+            "age": {
+                "label": "Edad",
+                "placeholder": "30"
+            },
+            "calling": {
+                "label": "Llamamiento",
+                "placeholder": "Maestro de Escuela Dominical"
+            },
+            "titleContact": "Información de Contacto",
+            "email": {
+                "label": "Correo Electrónico",
+                "placeholder": "juan@ejemplo.com"
+            },
+            "phone": {
+                "label": "Teléfono",
+                "placeholder": "+595 981 123 456"
+            },
+            "address": {
+                "label": "Dirección",
+                "placeholder": "Av. Eusebio Ayala 1234"
+            }
+        }
+    }
+}
