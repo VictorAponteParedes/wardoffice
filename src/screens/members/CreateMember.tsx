@@ -1,12 +1,12 @@
 // src/screens/members/CreateMember.tsx
 import { FormProvider, useForm } from "react-hook-form";
-import { TextInput } from "../../components/TextInput";
-import { ImageInput } from "../../components/ImageInput.tsx";
+import { TextInput } from "../../components/form/TextInput";
+import { ImageInput } from "../../components/form/ImageInput.tsx";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useMembers } from "../../hooks/useMembers";
-import { MessageToast } from "../../components/MessageToast";
+import { MessageToast } from "../../components/form/MessageToast";
 import { translate } from "../../lang/index";
 import {
   User,

@@ -11,44 +11,56 @@ import NotFound from "../screens/errors";
 import Dashboard from "../screens/dashboard";
 import MembersList from "../screens/members/MembersList";
 import CreateMember from "../screens/members/CreateMember";
+import Agenda from "../screens/agenda";
 
 export default function AppRoutes() {
-    return (
-        <Routes>
-            {/* RUTA PÚBLICA: Login */}
-            <Route path={RoutesView.login} element={<LoginPage />} />
+  return (
+    <Routes>
+      {/* RUTA PÚBLICA: Login */}
+      <Route path={RoutesView.login} element={<LoginPage />} />
 
-            {/* RUTA PROTEGIDA */}
-            <Route
-                path={RoutesView.dashboard}
-                element={
-                    <ProtectedRoute>
-                        <Dashboard />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path={RoutesView.memberList}
-                element={
-                    <ProtectedRoute>
-                        <MembersList />
-                    </ProtectedRoute>
-                }
-            />
-            <Route
-                path={RoutesView.memberCreate}
-                element={
-                    <ProtectedRoute>
-                        <CreateMember />
-                    </ProtectedRoute>
-                }
-            />
+      {/* RUTA PROTEGIDA */}
+      <Route
+        path={RoutesView.dashboard}
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={RoutesView.memberList}
+        element={
+          <ProtectedRoute>
+            <MembersList />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={RoutesView.memberCreate}
+        element={
+          <ProtectedRoute>
+            <CreateMember />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={RoutesView.agenda}
+        element={
+          <ProtectedRoute>
+            <Agenda />
+          </ProtectedRoute>
+        }
+      />
 
-            {/* REDIRECCIÓN POR DEFECTO */}
-            <Route path="/" element={<Navigate to={RoutesView.dashboard} replace />} />
+      {/* REDIRECCIÓN POR DEFECTO */}
+      <Route
+        path="/"
+        element={<Navigate to={RoutesView.dashboard} replace />}
+      />
 
-            {/* 404 → TU VISTA SUD HERMOSA */}
-            <Route path="*" element={<NotFound />} />
-        </Routes>
-    );
+      {/* 404 → TU VISTA SUD HERMOSA */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
 }

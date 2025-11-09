@@ -14,6 +14,7 @@ import {
   ChevronLeft,
   Sparkles,
   UserCheck,
+  ClipboardList,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -31,6 +32,7 @@ const Routes = {
   events: "/events",
   settings: "/settings",
   login: "/login",
+  agenda: "/agenda",
 };
 
 type SidebarProps = {
@@ -178,9 +180,17 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
               )}
             </AnimatePresence>
 
+            <Link
+              to={RoutesView.agenda}
+              className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all"
+            >
+              <ClipboardList className="w-5 h-5" />
+              <span className="font-medium">{translate("Sidebar.agenda")}</span>
+            </Link>
+
             {/* Otros ítems */}
             <Link
-              to={Routes.callings}
+              to={RoutesView.callings}
               className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/10 transition-all"
             >
               <UserCheck className="w-5 h-5" />
