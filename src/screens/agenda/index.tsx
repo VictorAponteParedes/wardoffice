@@ -1,20 +1,12 @@
 // src/pages/agenda/Agenda.tsx
 import { motion } from "framer-motion";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-  Calendar,
-  User,
-  Church,
-  Music,
-  Baby,
-  BookOpen,
-  Sparkles,
-  Users,
-} from "lucide-react";
+import { User, Church, Music, BookOpen, Sparkles, Users } from "lucide-react";
 import { translate } from "../../lang";
 import WardLayout from "../../layouts/WardLayout";
 import { TextInput } from "../../components/form/TextInput";
 import { TextArea } from "../../components/form/TextArea";
+import { DateInput } from "../../components/form/inputDate";
 
 export default function Agenda() {
   const methods = useForm({
@@ -76,11 +68,10 @@ export default function Agenda() {
               >
                 {/* Fecha, Dirige, Preside */}
                 <div className="grid md:grid-cols-3 gap-6">
-                  <TextInput
+                  <DateInput
                     name="date"
                     label="Fecha"
                     placeholder="dd/Mes/aaaa"
-                    icon={Calendar}
                   />
                   <TextInput
                     name="leader"
