@@ -1,1 +1,16 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #027da5;
+  --color-deep-cerulean-50: #eafeff;
+  --color-deep-cerulean-100: #cbfcff;
+  --color-deep-cerulean-200: #9df6ff;
+  --color-deep-cerulean-300: #59edff;
+  --color-deep-cerulean-400: #0fdaff;
+  --color-deep-cerulean-500: #00bde7;
+  --color-deep-cerulean-600: #0095c2;
+  --color-deep-cerulean-700: #027da5;
+  --color-deep-cerulean-800: #0c607e;
+  --color-deep-cerulean-900: #0f4e6a;
+  --color-deep-cerulean-950: #02334a;
+}
