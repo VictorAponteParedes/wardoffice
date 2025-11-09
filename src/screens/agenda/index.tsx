@@ -1,12 +1,21 @@
 // src/pages/agenda/Agenda.tsx
 import { motion } from "framer-motion";
-import { useForm, FormProvider } from "react-hook-form";
-import { User, Church, Music, BookOpen, Sparkles, Users } from "lucide-react";
+import { useForm, FormProvider, useFieldArray } from "react-hook-form";
+import {
+  User,
+  Church,
+  Music,
+  BookOpen,
+  Sparkles,
+  Users,
+  Mic2,
+} from "lucide-react";
 import { translate } from "../../lang";
 import WardLayout from "../../layouts/WardLayout";
 import { TextInput } from "../../components/form/TextInput";
 import { TextArea } from "../../components/form/TextArea";
 import { DateInput } from "../../components/form/inputDate";
+import { ToggleSwitch } from "../../components/form/ToggleSwitch";
 
 export default function Agenda() {
   const methods = useForm({
@@ -23,11 +32,36 @@ export default function Agenda() {
       testimonies: false,
       closingHymn: "",
       closingPrayer: "",
+      speakers: [],
+      testimoniesList: [],
     },
   });
 
+  const { watch, control } = methods;
+  const isTestimonyDay = watch("testimonies");
+
+  // Discursantes (si NO es día de testimonios)
+  const {
+    fields: speakers,
+    append: addSpeaker,
+    remove: removeSpeaker,
+  } = useFieldArray({
+    control,
+    name: "speakers",
+  });
+
+  // Testimonios (si SÍ es día de testimonios)
+  const {
+    fields: testimonies,
+    append: addTestimony,
+    remove: removeTestimony,
+  } = useFieldArray({
+    control,
+    name: "testimoniesList",
+  });
+
   const onSubmit = (data: any) => {
-    console.log("Agenda:", data);
+    console.log("Agenda completa:", data);
   };
 
   return (
@@ -68,11 +102,7 @@ export default function Agenda() {
               >
                 {/* Fecha, Dirige, Preside */}
                 <div className="grid md:grid-cols-3 gap-6">
-                  <DateInput
-                    name="date"
-                    label="Fecha"
-                    placeholder="dd/Mes/aaaa"
-                  />
+                  <DateInput name="date" label="Fecha" />
                   <TextInput
                     name="leader"
                     label="Dirige"
@@ -135,18 +165,161 @@ export default function Agenda() {
                   icon={Music}
                 />
 
-                {/* Testimonios */}
-                <div className="flex items-center gap-3">
-                  <input
-                    type="checkbox"
-                    {...methods.register("testimonies")}
-                    className="w-5 h-5 text-sud-blue rounded focus:ring-sud-blue"
-                  />
-                  <label className="font-medium text-gray-700 flex items-center gap-2">
-                    <Users className="w-5 h-5 text-sud-blue" />
-                    Incluir Tiempo de Testimonios
-                  </label>
-                </div>
+                {/* === ¿ES DÍA DE TESTIMONIOS? === */}
+                <ToggleSwitch
+                  name="testimonies"
+                  label="¿Es día de testimonios?"
+                  yesLabel="Sí"
+                  noLabel="No"
+                />
+
+                {/* === DISCURSANTES (SI NO) === */}
+                {!isTestimonyDay && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-4"
+                  >
+                    <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                      <Mic2 className="w-5 h-5 text-sud-blue" />
+                      Discursantes
+                    </h3>
+                    {speakers.map((field, index) => (
+                      <motion.div
+                        key={field.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center gap-2"
+                      >
+                        <TextInput
+                          name={`speakers.${index}.name`}
+                          placeholder={`Nombre del ${
+                            index === 0
+                              ? "1er"
+                              : index === 1
+                              ? "2do"
+                              : `${index + 1}°`
+                          } discursante`}
+                          icon={User}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeSpeaker(index)}
+                          className="text-red-500 hover:text-red-700 p-1"
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </motion.div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => addSpeaker({ name: "" })}
+                      className="text-sud-blue hover:text-sud-blue/80 font-medium text-sm flex items-center gap-1"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                      Agregar{" "}
+                      {speakers.length === 0
+                        ? "1er"
+                        : speakers.length === 1
+                        ? "2do"
+                        : `${speakers.length + 1}°`}{" "}
+                      discursante
+                    </button>
+                  </motion.div>
+                )}
+
+                {/* === TESTIMONIOS (SI SÍ) === */}
+                {isTestimonyDay && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-4"
+                  >
+                    <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                      <Users className="w-5 h-5 text-sud-blue" />
+                      Hermanos que dan testimonio
+                    </h3>
+                    {testimonies.map((field, index) => (
+                      <motion.div
+                        key={field.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="flex items-center gap-2"
+                      >
+                        <TextInput
+                          name={`testimoniesList.${index}.name`}
+                          placeholder="Nombre del hermano/a"
+                          icon={User}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeTestimony(index)}
+                          className="text-red-500 hover:text-red-700 p-1"
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </motion.div>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => addTestimony({ name: "" })}
+                      className="text-sud-blue hover:text-sud-blue/80 font-medium text-sm flex items-center gap-1"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 4v16m8-8H4"
+                        />
+                      </svg>
+                      Agregar hermano que da testimonio
+                    </button>
+                  </motion.div>
+                )}
 
                 {/* Himno y oración final */}
                 <div className="grid md:grid-cols-2 gap-6">
@@ -164,12 +337,12 @@ export default function Agenda() {
                   />
                 </div>
 
-                {/* Botón */}
+                {/* Botón Guardar */}
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full bg-sud-blue text-white py-4 rounded-full font-bold text-lg shadow-xl hover:bg-sud-blue/90 transition"
+                  className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg shadow-xl hover:bg-deep-cerulean-900 transition"
                 >
                   Guardar Agenda
                 </motion.button>
