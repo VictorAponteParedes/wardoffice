@@ -6,4 +6,5 @@ export const RoutesView = {
   notFound: "/not-found",
   agenda: "/agenda",
   callings: "/callings",
+  speech: "/speech",
 };

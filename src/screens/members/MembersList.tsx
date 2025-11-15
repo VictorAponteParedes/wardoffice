@@ -81,9 +81,8 @@ export default function MembersList() {
         initial={{ opacity: 0, x: -50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
-        className={`max-w-7xl mx-auto p-6 space-y-8 rounded-2xl shadow-2xl ${
-          isDark ? "bg-gray-900" : "bg-gradient-to-br from-blue-50 to-white"
-        }`}
+        className={`max-w-7xl mx-auto p-6 space-y-8 rounded-2xl shadow-2xl ${isDark ? "bg-gray-900" : "bg-gradient-to-br from-blue-50 to-white"
+          }`}
       >
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -122,20 +121,18 @@ export default function MembersList() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder={translate("Members.searchPlaceholder")}
-              className={`w-full pl-14 pr-6 py-4 rounded-full border-2 ${
-                isDark
-                  ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500"
-                  : "bg-white border-blue-200 placeholder-blue-400 focus:border-blue-600"
-              } shadow-lg outline-none text-lg`}
+              className={`w-full pl-14 pr-6 py-4 rounded-full border-2 ${isDark
+                ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500"
+                : "bg-white border-blue-200 placeholder-blue-400 focus:border-blue-600"
+                } shadow-lg outline-none text-lg`}
             />
           </div>
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-3 px-6 py-4 rounded-full font-medium shadow-lg transition-all ${
-              isDark
-                ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
-                : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-            }`}
+            className={`flex items-center gap-3 px-6 py-4 rounded-full font-medium shadow-lg transition-all ${isDark
+              ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
+              : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+              }`}
           >
             <Filter className="w-5 h-5" />
             Filtros
@@ -147,9 +144,8 @@ export default function MembersList() {
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
-            className={`p-6 rounded-2xl shadow-inner space-y-4 ${
-              isDark ? "bg-gray-800" : "bg-blue-50"
-            }`}
+            className={`p-6 rounded-2xl shadow-inner space-y-4 ${isDark ? "bg-gray-800" : "bg-blue-50"
+              }`}
           >
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
@@ -213,9 +209,8 @@ export default function MembersList() {
         {/* Lista de Cards */}
         {filteredMembers.length === 0 ? (
           <div
-            className={`text-center py-20 rounded-3xl ${
-              isDark ? "bg-gray-800" : "bg-blue-50"
-            }`}
+            className={`text-center py-20 rounded-3xl ${isDark ? "bg-gray-800" : "bg-blue-50"
+              }`}
           >
             <Users className="w-20 h-20 text-blue-400 mx-auto mb-4" />
             <p className="text-2xl font-semibold text-blue-700">

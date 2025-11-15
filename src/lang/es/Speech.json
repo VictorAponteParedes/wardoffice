@@ -1,0 +1,16 @@
+{
+    "Speech": {
+        "title": "Discursantes",
+        "subtitle": "Administra los discursos y oradores del barrio",
+        "addButton": "Agregar Discursante",
+        "addButtonEmpty": "Ser el primero en agregar",
+        "searchPlaceholder": "Buscar por nombre o tema del discurso...",
+        "count": {
+            "one": "discursante",
+            "other": "discursantes"
+        },
+        "noSpeakers": "Aún no hay discursantes registrados",
+        "noResults": "No se encontraron resultados",
+        "errorLoading": "Error al cargar los discursantes"
+    }
+}

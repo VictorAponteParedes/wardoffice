@@ -52,9 +52,8 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
 
   return (
     <aside
-      className={`${
-        isCollapsed ? "w-20" : "w-80"
-      } bg-primary text-white shadow-2xl sticky top-0 h-screen flex flex-col justify-between transition-all duration-500 ease-in-out overflow-hidden`}
+      className={`${isCollapsed ? "w-20" : "w-80"
+        } bg-primary text-white shadow-2xl sticky top-0 h-screen flex flex-col justify-between transition-all duration-500 ease-in-out overflow-hidden`}
     >
       {/* Toggle Button */}
       <button
@@ -164,7 +163,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                   className="pl-12 space-y-2"
                 >
                   <Link
-                    to={Routes.talks}
+                    to={RoutesView.speech}
                     className="block py-2 text-sm hover:text-yellow-300"
                   >
                     {translate("Sidebar.talksSchedule")}
