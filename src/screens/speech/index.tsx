@@ -1,4 +1,5 @@
 // src/speech/index.tsx
+// (Actualizado para abrir modal en lugar de navegar)
 import { motion } from "framer-motion";
 import { Search, Plus, Users, ArrowLeft, Mic } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +10,7 @@ import { useTheme } from "../../context/ThemeContext";
 import { useSpeakers } from "../../hooks/useSpeakers";
 import WardLayout from "../../layouts/WardLayout";
 import SpeakerCard from "./components/SpeakerCard";
+import SpeakerAssignmentModal from "./components/SpeakerAssignmentModal";
 
 export default function Speech() {
     const navigate = useNavigate();
@@ -16,6 +18,7 @@ export default function Speech() {
     const { speakers, loading, error } = useSpeakers();
 
     const [searchTerm, setSearchTerm] = useState("");
+    const [isModalOpen, setIsModalOpen] = useState(false); // Estado para modal
 
     const filteredSpeakers = useMemo(() => {
         return speakers.filter((speaker) =>
@@ -75,9 +78,9 @@ export default function Speech() {
                         </div>
                     </div>
 
-                    {/* Botón Agregar Discursante */}
+                    {/* Botón Agregar: Abre modal */}
                     <button
-                        onClick={() => navigate("/speech/create")}
+                        onClick={() => setIsModalOpen(true)}
                         className="flex items-center gap-3 bg-primary text-white px-6 py-4 rounded-full font-bold shadow-xl hover:bg-deep-cerulean-900 transition-all transform hover:scale-105 active:scale-95"
                     >
                         <Plus className="w-6 h-6" />
@@ -121,7 +124,7 @@ export default function Speech() {
                         </p>
                         {speakers.length === 0 && (
                             <button
-                                onClick={() => navigate("/speech/create")}
+                                onClick={() => setIsModalOpen(true)}
                                 className="inline-flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-full font-bold shadow-lg hover:bg-deep-cerulean-900 transition-all transform hover:scale-105"
                             >
                                 <Plus className="w-6 h-6" />
@@ -137,6 +140,17 @@ export default function Speech() {
                     </div>
                 )}
             </motion.div>
+
+            {/* Modal de Asignación */}
+            <SpeakerAssignmentModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                onAssign={(newSpeaker) => {
+                    // Aquí agregar el nuevo speaker al estado o refetch useSpeakers
+                    console.log("Nuevo discursante asignado:", newSpeaker);
+                    setIsModalOpen(false);
+                }}
+            />
         </WardLayout>
     );
 }

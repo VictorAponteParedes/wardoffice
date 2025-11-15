@@ -67,6 +67,6 @@ export const useMembers = () => {
         setSearch,
         filter,
         setFilter,
-        createMember // ¡NUEVA FUNCIÓN!
+        createMember
     };
 };
