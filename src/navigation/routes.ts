@@ -7,4 +7,5 @@ export const RoutesView = {
   agenda: "/agenda",
   callings: "/callings",
   speech: "/speech",
+  topics: "/topics"
 };

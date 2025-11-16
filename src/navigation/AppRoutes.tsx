@@ -13,6 +13,7 @@ import MembersList from "../screens/members/MembersList";
 import CreateMember from "../screens/members/CreateMember";
 import Agenda from "../screens/agenda";
 import Speech from "../screens/speech";
+import Topics from "../screens/topics"
 
 export default function AppRoutes() {
   return (
@@ -58,6 +59,14 @@ export default function AppRoutes() {
         element={
           <ProtectedRoute>
             <Speech />
+          </ProtectedRoute>
+        }
+      />
+       <Route
+        path={RoutesView.topics}
+        element={
+          <ProtectedRoute>
+            <Topics />
           </ProtectedRoute>
         }
       />
