@@ -1,10 +1,14 @@
+
 export const RoutesView = {
-  dashboard: "/dashboard",
   login: "/login",
+  dashboard: "/dashboard",
+
   memberList: "/members",
   memberCreate: "/members/create",
-  notFound: "/not-found",
+  memberEdit: "/members/edit/:id",
+
   agenda: "/agenda",
-  callings: "/callings",
   speech: "/speech",
-};
+
+  notFound: "*",
+} as const;
