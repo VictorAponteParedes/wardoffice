@@ -9,6 +9,5 @@ export const RoutesView = {
 
   agenda: "/agenda",
   speech: "/speech",
-
-  notFound: "*",
-} as const;
+  topics: "/topics"
+};

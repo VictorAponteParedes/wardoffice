@@ -12,12 +12,13 @@ import { DASHBOARD_ROUTES } from "../screens/dashboard/routes";
 import { AGENDA_ROUTES } from "../screens/agenda/routes";
 import { SPEECH_ROUTES } from "../screens/speech/routes";
 
+// Todas las rutas privadas (con lazy + ProtectedRoute automático)
 const PRIVATE_ROUTES = [
   ...DASHBOARD_ROUTES,
   ...MEMBER_ROUTES,
   ...AGENDA_ROUTES,
   ...SPEECH_ROUTES,
-
+  // + todos los que vayas creando
 ];
 
 export default function AppRoutes() {

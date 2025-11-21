@@ -31,7 +31,7 @@ export default function AssignmentGenerator({ onGenerate }: { onGenerate: (assig
             className="flex items-center justify-center gap-3 w-full py-4 bg-primary dark:bg-primary rounded-full font-medium shadow-lg hover:bg-primary dark:hover:bg-primary transition disabled:opacity-50 text-white"
         >
             <RotateCcw className="w-5 h-5 text-white" />
-            {isGenerating ? "Generando asignación..." : "Generar Asignación Inspirada"}
+            {isGenerating ? "Generando asignación..." : "Generar Asignación"}
         </button>
     );
 }
