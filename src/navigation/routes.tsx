@@ -9,5 +9,8 @@ export const RoutesView = {
 
   agenda: "/agenda",
   speech: "/speech",
-  topics: "/topics"
+  topics: "/topics",
+  topicsCreate: "/topics/create",
+  topicsEdit: "/topics/edit/:id",
+  topicsDetail: "/topics/:id",
 };

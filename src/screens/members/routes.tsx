@@ -18,4 +18,10 @@ export const MEMBER_ROUTES = [
         name: 'Members',
         icon: 'User',
     },
+    {
+        path: RoutesView.memberEdit,
+        element: <MembersCreate />,
+        name: 'Members',
+        icon: 'User',
+    },
 ];

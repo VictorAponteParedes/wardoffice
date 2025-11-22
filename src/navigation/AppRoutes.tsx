@@ -11,6 +11,7 @@ import { MEMBER_ROUTES } from "../screens/members/routes";
 import { DASHBOARD_ROUTES } from "../screens/dashboard/routes";
 import { AGENDA_ROUTES } from "../screens/agenda/routes";
 import { SPEECH_ROUTES } from "../screens/speech/routes";
+import { TOPICS_ROUTES } from "../screens/topics/routes";
 
 // Todas las rutas privadas (con lazy + ProtectedRoute automático)
 const PRIVATE_ROUTES = [
@@ -18,6 +19,7 @@ const PRIVATE_ROUTES = [
   ...MEMBER_ROUTES,
   ...AGENDA_ROUTES,
   ...SPEECH_ROUTES,
+  ...TOPICS_ROUTES,
   // + todos los que vayas creando
 ];
 
