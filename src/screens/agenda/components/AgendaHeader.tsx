@@ -6,14 +6,6 @@ export const AgendaHeader = () => {
     return (
         <div className="relative text-center mb-12">
             <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10 pointer-events-none"
-            >
-                <Sparkles className="w-96 h-96 text-sud-gold" />
-            </motion.div>
-
-            <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.5 }}
