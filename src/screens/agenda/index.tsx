@@ -1,21 +1,14 @@
 // src/pages/agenda/Agenda.tsx
 import { motion } from "framer-motion";
-import { useForm, FormProvider, useFieldArray } from "react-hook-form";
-import {
-  User,
-  Church,
-  Music,
-  BookOpen,
-  Sparkles,
-  Users,
-  Mic2,
-} from "lucide-react";
-import { translate } from "../../lang";
+import { useForm, FormProvider } from "react-hook-form";
 import WardLayout from "../../layouts/WardLayout";
-import { TextInput } from "../../components/form/TextInput";
-import { TextArea } from "../../components/form/TextArea";
-import { DateInput } from "../../components/form/inputDate";
-import { ToggleSwitch } from "../../components/form/ToggleSwitch";
+import { AgendaHeader } from "./components/AgendaHeader";
+import { GeneralInfoSection } from "./components/GeneralInfoSection";
+import { WelcomeSection } from "./components/WelcomeSection";
+import { OpeningSection } from "./components/OpeningSection";
+import { SacramentSection } from "./components/SacramentSection";
+import { ProgramSection } from "./components/ProgramSection";
+import { ClosingSection } from "./components/ClosingSection";
 
 export default function Agenda() {
   const methods = useForm({
@@ -37,318 +30,46 @@ export default function Agenda() {
     },
   });
 
-  const { watch, control } = methods;
-  const isTestimonyDay = watch("testimonies");
-
-  // Discursantes (si NO es día de testimonios)
-  const {
-    fields: speakers,
-    append: addSpeaker,
-    remove: removeSpeaker,
-  } = useFieldArray({
-    control,
-    name: "speakers",
-  });
-
-  // Testimonios (si SÍ es día de testimonios)
-  const {
-    fields: testimonies,
-    append: addTestimony,
-    remove: removeTestimony,
-  } = useFieldArray({
-    control,
-    name: "testimoniesList",
-  });
-
   const onSubmit = (data: any) => {
     console.log("Agenda completa:", data);
   };
 
   return (
     <WardLayout>
-      <div className="min-h-screen bg-gradient-to-br from-sud-light via-white to-sud-light/50 py-12">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-20 -right-20 opacity-20 pointer-events-none"
-        >
-          <Sparkles className="w-64 h-64 text-sud-gold/20" />
-        </motion.div>
+      <div className="min-h-screen bg-gray-50/50 py-12">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <AgendaHeader />
 
-        <div className="container mx-auto px-4 max-w-4xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-sud-light p-8 md:p-12"
-          >
-            {/* Título */}
-            <div className="text-center mb-10">
+          <FormProvider {...methods}>
+            <form
+              onSubmit={methods.handleSubmit(onSubmit)}
+              className="space-y-8"
+            >
+              <GeneralInfoSection />
+              <WelcomeSection />
+              <OpeningSection />
+              <SacramentSection />
+              <ProgramSection />
+              <ClosingSection />
+
+              {/* Botón Guardar */}
               <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                className="inline-flex items-center gap-3 mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="flex justify-end pt-8"
               >
-                <BookOpen className="w-10 h-10 text-sud-blue" />
-                <h1 className="text-4xl md:text-5xl font-bold text-sud-blue">
-                  {translate("Agenda.title") || "Crear Agenda"}
-                </h1>
-              </motion.div>
-            </div>
-
-            <FormProvider {...methods}>
-              <form
-                onSubmit={methods.handleSubmit(onSubmit)}
-                className="space-y-10"
-              >
-                {/* Fecha, Dirige, Preside */}
-                <div className="grid md:grid-cols-3 gap-6">
-                  <DateInput name="date" label="Fecha" />
-                  <TextInput
-                    name="leader"
-                    label="Dirige"
-                    placeholder="Nombre del dirigente"
-                    icon={User}
-                  />
-                  <TextInput
-                    name="presider"
-                    label="Preside"
-                    placeholder="Obispo / Presidente de rama"
-                    icon={Church}
-                  />
-                </div>
-
-                {/* Bienvenida */}
-                <TextArea
-                  name="welcome"
-                  label="Bienvenida y reconocimiento"
-                  placeholder="Escribe el mensaje de bienvenida..."
-                  rows={2}
-                />
-
-                {/* Anuncios */}
-                <TextArea
-                  name="announcements"
-                  label="Anuncios"
-                  placeholder="Escribe un anuncio por línea..."
-                  rows={6}
-                />
-
-                {/* Himno y oración de apertura */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <TextInput
-                    name="openingHymn"
-                    label="Himno de Apertura"
-                    placeholder="N° Título del himno"
-                    icon={Music}
-                  />
-                  <TextInput
-                    name="openingPrayer"
-                    label="Oración de Apertura"
-                    placeholder="Nombre del hermano/a"
-                    icon={User}
-                  />
-                </div>
-
-                {/* Asuntos */}
-                <TextArea
-                  name="business"
-                  label="Asuntos"
-                  placeholder="Escribe cada asunto en una línea..."
-                  rows={3}
-                />
-
-                {/* Himno Sacramental */}
-                <TextInput
-                  name="sacramentalHymn"
-                  label="Himno Sacramental"
-                  placeholder="N° Título del himno"
-                  icon={Music}
-                />
-
-                {/* === ¿ES DÍA DE TESTIMONIOS? === */}
-                <ToggleSwitch
-                  name="testimonies"
-                  label="¿Es día de testimonios?"
-                  yesLabel="Sí"
-                  noLabel="No"
-                />
-
-                {/* === DISCURSANTES (SI NO) === */}
-                {!isTestimonyDay && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-4"
-                  >
-                    <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-                      <Mic2 className="w-5 h-5 text-sud-blue" />
-                      Discursantes
-                    </h3>
-                    {speakers.map((field, index) => (
-                      <motion.div
-                        key={field.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="flex items-center gap-2"
-                      >
-                        <TextInput
-                          name={`speakers.${index}.name`}
-                          placeholder={`Nombre del ${
-                            index === 0
-                              ? "1er"
-                              : index === 1
-                              ? "2do"
-                              : `${index + 1}°`
-                          } discursante`}
-                          icon={User}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeSpeaker(index)}
-                          className="text-red-500 hover:text-red-700 p-1"
-                        >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-                      </motion.div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => addSpeaker({ name: "" })}
-                      className="text-sud-blue hover:text-sud-blue/80 font-medium text-sm flex items-center gap-1"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 4v16m8-8H4"
-                        />
-                      </svg>
-                      Agregar{" "}
-                      {speakers.length === 0
-                        ? "1er"
-                        : speakers.length === 1
-                        ? "2do"
-                        : `${speakers.length + 1}°`}{" "}
-                      discursante
-                    </button>
-                  </motion.div>
-                )}
-
-                {/* === TESTIMONIOS (SI SÍ) === */}
-                {isTestimonyDay && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="space-y-4"
-                  >
-                    <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-                      <Users className="w-5 h-5 text-sud-blue" />
-                      Hermanos que dan testimonio
-                    </h3>
-                    {testimonies.map((field, index) => (
-                      <motion.div
-                        key={field.id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        className="flex items-center gap-2"
-                      >
-                        <TextInput
-                          name={`testimoniesList.${index}.name`}
-                          placeholder="Nombre del hermano/a"
-                          icon={User}
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeTestimony(index)}
-                          className="text-red-500 hover:text-red-700 p-1"
-                        >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M6 18L18 6M6 6l12 12"
-                            />
-                          </svg>
-                        </button>
-                      </motion.div>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => addTestimony({ name: "" })}
-                      className="text-sud-blue hover:text-sud-blue/80 font-medium text-sm flex items-center gap-1"
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 4v16m8-8H4"
-                        />
-                      </svg>
-                      Agregar hermano que da testimonio
-                    </button>
-                  </motion.div>
-                )}
-
-                {/* Himno y oración final */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <TextInput
-                    name="closingHymn"
-                    label="Himno Final"
-                    placeholder="N° Título del himno"
-                    icon={Music}
-                  />
-                  <TextInput
-                    name="closingPrayer"
-                    label="Oración Final"
-                    placeholder="Nombre del hermano/a"
-                    icon={User}
-                  />
-                </div>
-
-                {/* Botón Guardar */}
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="w-full bg-primary text-white py-4 rounded-full font-bold text-lg shadow-xl hover:bg-deep-cerulean-900 transition"
+                  className="bg-sud-blue text-white px-12 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-sud-blue/20 hover:bg-sud-blue/90 transition-all"
                 >
                   Guardar Agenda
                 </motion.button>
-              </form>
-            </FormProvider>
-          </motion.div>
+              </motion.div>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </WardLayout>
