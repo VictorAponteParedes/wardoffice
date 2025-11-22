@@ -4,6 +4,7 @@ import Sidebar from './es/sidebar.json';
 import Members from './es/members.json';
 import CreateMember from './es/CreateMember.json';
 import Speech from './es/Speech.json';
+import ModalDelete from './es/ModalDelete.json';
 
 // Definir el idioma actual, por ejemplo, 'es' para español
 const currentLanguage = 'es';
@@ -18,12 +19,13 @@ const translations = {
         ...Members,
         ...CreateMember,
         ...Speech,
+        ...ModalDelete,
     },
 
 };
 
 // Función para obtener la traducción
-const translate = (key) => {
+const translate = (key: any) => {
     const keys = key.split('.');
     let result = translations[currentLanguage];
 

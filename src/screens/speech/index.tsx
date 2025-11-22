@@ -11,9 +11,10 @@ import { Pagination } from "./components/Pagination";
 import type { SpeakerType } from "../../types/speech";
 import { Plus, Mic } from "lucide-react";
 import SpeakerAssignmentModal from "./components/SpeakerAssignmentModal";
+import DeleteConfirmationModal from "../../components/DeleteAccountModal";
 
 export default function Speech() {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { isDark } = useTheme();
     const { speakers, loading, error } = useSpeakers();
 
@@ -22,7 +23,30 @@ export default function Speech() {
     const [topicFilter, setTopicFilter] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [speakerToDelete, setSpeakerToDelete] = useState<SpeakerType | null>(null);
     const itemsPerPage = 10;
+
+
+    const handleDelete = (speaker: SpeakerType) => {
+        setSpeakerToDelete(speaker);
+        setIsDeleteModalOpen(true);
+    };
+
+    const confirmDelete = () => {
+        if (speakerToDelete) {
+            console.log("Eliminando definitivamente a:", speakerToDelete.name);
+            // Aquí iría tu lógica real de borrado (API, etc.)
+            // deleteSpeaker(speakerToDelete.id);
+        }
+        setIsDeleteModalOpen(false);
+        setSpeakerToDelete(null);
+    };
+
+    const cancelDelete = () => {
+        setIsDeleteModalOpen(false);
+        setSpeakerToDelete(null);
+    };
 
     const filteredSpeakers = useMemo(() => {
         return speakers.filter((speaker) => {
@@ -62,11 +86,6 @@ export default function Speech() {
         console.log("Edit speaker", speaker);
     };
 
-    const handleDelete = (speaker: SpeakerType) => {
-        if (window.confirm(`¿Estás seguro de eliminar a ${speaker.name}?`)) {
-            console.log("Delete speaker", speaker);
-        }
-    };
 
     const handleView = (speaker: SpeakerType) => {
         console.log("View speaker", speaker);
@@ -145,6 +164,14 @@ export default function Speech() {
                     </div>
                 </div>
             </div>
+
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                title="Eliminar discurso"
+                itemName={speakerToDelete?.name || ""}
+                onCancel={cancelDelete}
+                onConfirm={confirmDelete}
+            />
 
             {/* Modal de Asignación */}
             <SpeakerAssignmentModal

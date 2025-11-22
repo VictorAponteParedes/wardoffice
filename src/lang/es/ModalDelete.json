@@ -1,0 +1,11 @@
+{
+    "DeleteModal": {
+        "permanentAction": "Acción permanente",
+        "defaultTitle": "Eliminar",
+        "confirmWithName": "¿Estás seguro de que quieres eliminar <br /><strong>{name}</strong>?",
+        "confirmGeneric": "¿Estás seguro de que quieres continuar?",
+        "defaultDescription": "Esta acción no se puede deshacer.",
+        "cancel": "Cancelar",
+        "confirm": "Sí, eliminar"
+    }
+}
