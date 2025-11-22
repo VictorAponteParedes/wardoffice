@@ -6,12 +6,12 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import LoginPage from "../screens/auth/login/index"
 import NotFound from "../screens/errors/index";
 
-
 import { MEMBER_ROUTES } from "../screens/members/routes";
 import { DASHBOARD_ROUTES } from "../screens/dashboard/routes";
 import { AGENDA_ROUTES } from "../screens/agenda/routes";
 import { SPEECH_ROUTES } from "../screens/speech/routes";
 import { TOPICS_ROUTES } from "../screens/topics/routes";
+import { CALLINGS_ROUTES } from "../screens/callings/routes";
 
 // Todas las rutas privadas (con lazy + ProtectedRoute automático)
 const PRIVATE_ROUTES = [
@@ -20,7 +20,7 @@ const PRIVATE_ROUTES = [
   ...AGENDA_ROUTES,
   ...SPEECH_ROUTES,
   ...TOPICS_ROUTES,
-  // + todos los que vayas creando
+  ...CALLINGS_ROUTES,
 ];
 
 export default function AppRoutes() {
