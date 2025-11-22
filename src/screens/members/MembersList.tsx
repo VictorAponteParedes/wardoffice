@@ -1,65 +1,83 @@
-// src/screens/members/MembersList.tsx
-import { motion } from "framer-motion";
-import { Search, Filter, Plus, Users, ArrowLeft } from "lucide-react";
+import React, { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { translate } from "../../lang";
-
-import { MemberCard } from "./components/MemberCard";
-import { useState, useMemo } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { useMembers } from "../../hooks/useMembers";
+import { useMemberStore } from "../../store/memberStore";
 import WardLayout from "../../layouts/WardLayout";
+import { translate } from "../../lang";
+import { MembersTabs } from "./components/MembersTabs";
+import { MembersFilter } from "./components/MembersFilter";
+import { MembersTable } from "./components/MembersTable";
+import { Pagination } from "./components/Pagination";
+import type { Member } from "../../types/members";
+import { Plus } from "lucide-react";
 
 export default function MembersList() {
   const navigate = useNavigate();
   const { isDark } = useTheme();
-  const { members: rawMembers, loading, error } = useMembers();
+  // Use useMembers to trigger data loading
+  const { loading, error } = useMembers();
+  // Use store directly for flexible local filtering
+  const { members: allMembers } = useMemberStore();
 
+  const [activeTab, setActiveTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-  const [showFilters, setShowFilters] = useState(false);
-  const [filters, setFilters] = useState({
-    name: "",
-    status: "all",
-    calling: "",
-  });
+  const [callingFilter, setCallingFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const filteredMembers = useMemo(() => {
-    return rawMembers.filter((member) => {
-      const matchesSearch =
-        searchTerm === "" ||
-        member.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        member.calling.toLowerCase().includes(searchTerm.toLowerCase());
+    return allMembers.filter((member) => {
+      // Filter by Status (Tabs)
+      if (activeTab !== "all" && member.status !== activeTab) return false;
 
-      const matchesName =
-        filters.name === "" ||
-        member.name.toLowerCase().includes(filters.name.toLowerCase());
-      const matchesStatus =
-        filters.status === "all" || member.status === filters.status;
-      const matchesCalling =
-        filters.calling === "" ||
-        member.calling.toLowerCase().includes(filters.calling.toLowerCase());
+      // Filter by Name (Search)
+      if (
+        searchTerm &&
+        !member.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+        return false;
 
-      return matchesSearch && matchesName && matchesStatus && matchesCalling;
+      // Filter by Calling
+      if (
+        callingFilter &&
+        !member.calling.toLowerCase().includes(callingFilter.toLowerCase())
+      )
+        return false;
+
+      return true;
     });
-  }, [rawMembers, searchTerm, filters]);
+  }, [allMembers, activeTab, searchTerm, callingFilter]);
 
-  const handleFilterChange = (e: any) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+  const totalPages = Math.ceil(filteredMembers.length / itemsPerPage);
+  const paginatedMembers = filteredMembers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleEdit = (member: Member) => {
+    // Navigate to edit screen (assuming it exists or reuse create with ID)
+    // For now, we'll assume a route like /members/edit/:id or just log it
+    console.log("Edit member", member);
+    // If you have a route: navigate(`/members/edit/${member.id}`);
   };
 
-  const resetFilters = () => {
-    setSearchTerm("");
-    setFilters({ name: "", status: "all", calling: "" });
+  const handleDelete = (member: Member) => {
+    if (window.confirm(`¿Estás seguro de eliminar a ${member.name}?`)) {
+      console.log("Delete member", member);
+      // Implement delete logic here (call store action)
+    }
+  };
+
+  const handleView = (member: Member) => {
+    navigate(`/members/${member.id}`);
   };
 
   if (loading) {
     return (
       <WardLayout>
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-yellow-500"></div>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-blue-500"></div>
         </div>
       </WardLayout>
     );
@@ -77,156 +95,54 @@ export default function MembersList() {
 
   return (
     <WardLayout>
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6 }}
-        className={`max-w-7xl mx-auto p-6 space-y-8 rounded-2xl shadow-2xl ${isDark ? "bg-gray-900" : "bg-gradient-to-br from-blue-50 to-white"
-          }`}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate(-1)}
-              className="text-primary hover:text-deep-cerulean-900"
-            >
-              <ArrowLeft className="w-8 h-8" />
-            </button>
+      <div className={`min-h-screen p-6 ${isDark ? "bg-gray-900" : "bg-gray-50"}`}>
+        <div className="max-w-7xl mx-auto space-y-6">
+          {/* Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-4xl font-bold text-primary flex items-center gap-3">
-                <Users className="w-10 h-10 text-primary" />
-                {translate("Members.title")}
-              </h1>
-              <p className="text-lg text-primary">
-                {translate("Members.subtitle")}
-              </p>
+              <h1 className="text-2xl font-bold text-gray-900">Gestión de Miembros</h1>
+              <p className="text-gray-500">Administra los miembros del barrio y sus llamamientos.</p>
             </div>
+            <button
+              onClick={() => navigate("/members/create")}
+              className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              {translate("Members.buttonAdd")}
+            </button>
           </div>
-          <button
-            onClick={() => navigate("/members/create")}
-            className="flex items-center gap-3 bg-primary text-white px-6 py-4 rounded-full font-bold shadow-xl hover:bg-deep-cerulean-900 transition-all"
-          >
-            <Plus className="w-6 h-6" />
-            {translate("Members.buttonAdd")}
-          </button>
-        </div>
 
-        {/* Búsqueda + Filtros */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-600 w-6 h-6" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder={translate("Members.searchPlaceholder")}
-              className={`w-full pl-14 pr-6 py-4 rounded-full border-2 ${isDark
-                ? "bg-gray-800 border-gray-700 text-white placeholder-gray-400 focus:border-blue-500"
-                : "bg-white border-blue-200 placeholder-blue-400 focus:border-blue-600"
-                } shadow-lg outline-none text-lg`}
+          {/* Tabs */}
+          <MembersTabs activeTab={activeTab} onTabChange={setActiveTab} />
+
+          {/* Main Content Area */}
+          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+            {/* Filters */}
+            <MembersFilter
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              callingFilter={callingFilter}
+              onCallingFilterChange={setCallingFilter}
+              onSearch={() => setCurrentPage(1)} // Reset to page 1 on explicit search
+            />
+
+            {/* Table */}
+            <MembersTable
+              members={paginatedMembers}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+              onView={handleView}
+            />
+
+            {/* Pagination */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
             />
           </div>
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-3 px-6 py-4 rounded-full font-medium shadow-lg transition-all ${isDark
-              ? "bg-gray-800 text-gray-300 hover:bg-gray-700"
-              : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-              }`}
-          >
-            <Filter className="w-5 h-5" />
-            Filtros
-          </button>
         </div>
-
-        {/* Filtros Avanzados */}
-        {showFilters && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            className={`p-6 rounded-2xl shadow-inner space-y-4 ${isDark ? "bg-gray-800" : "bg-blue-50"
-              }`}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-sm font-bold text-blue-800 mb-2">
-                  {translate("Members.filterName")}
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={filters.name}
-                  onChange={handleFilterChange}
-                  className="w-full px-4 py-3 rounded-xl border border-blue-300 focus:border-blue-600 outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-blue-800 mb-2">
-                  {translate("Members.filterStatus")}
-                </label>
-                <select
-                  name="status"
-                  value={filters.status}
-                  onChange={handleFilterChange}
-                  className="w-full px-4 py-3 rounded-xl border border-blue-300 focus:border-blue-600 outline-none"
-                >
-                  <option value="all">Todos</option>
-                  <option value="active">Activo</option>
-                  <option value="inactive">Inactivo</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-bold text-blue-800 mb-2">
-                  {translate("Members.filterCalling")}
-                </label>
-                <input
-                  type="text"
-                  name="calling"
-                  value={filters.calling}
-                  onChange={handleFilterChange}
-                  className="w-full px-4 py-3 rounded-xl border border-blue-300 focus:border-blue-600 outline-none"
-                />
-              </div>
-            </div>
-            <div className="text-right">
-              <button
-                onClick={resetFilters}
-                className="px-6 py-3 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition"
-              >
-                {translate("Members.buttonReset")}
-              </button>
-            </div>
-          </motion.div>
-        )}
-
-        {/* Contador */}
-        <div className="text-right">
-          <p className="text-2xl font-bold text-blue-800">
-            {filteredMembers.length} {translate("Members.count")}
-          </p>
-        </div>
-
-        {/* Lista de Cards */}
-        {filteredMembers.length === 0 ? (
-          <div
-            className={`text-center py-20 rounded-3xl ${isDark ? "bg-gray-800" : "bg-blue-50"
-              }`}
-          >
-            <Users className="w-20 h-20 text-blue-400 mx-auto mb-4" />
-            <p className="text-2xl font-semibold text-blue-700">
-              {rawMembers.length === 0
-                ? translate("Members.noMembers")
-                : translate("Members.noResults")}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-6">
-            {filteredMembers.map((member) => (
-              <MemberCard key={member.id} member={member} />
-            ))}
-          </div>
-        )}
-      </motion.div>
+      </div>
     </WardLayout>
   );
 }
