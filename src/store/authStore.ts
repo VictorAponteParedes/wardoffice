@@ -23,11 +23,11 @@ type AuthState = {
 const fakeApiLogin = (email: string, password: string): Promise<User> => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
-            if (email === "bishop@ward.org" && password === "jesus123") {
+            if (email === "aponte@ward.org" && password === "jesus123") {
                 resolve({
                     id: "1",
-                    email: "bishop@ward.org",
-                    name: "Bishop Johnson",
+                    email: "aponte@ward.org",
+                    name: "Victor Aponte",
                     role: "bishop",
                     ward: "Provo 5th Ward",
                 });

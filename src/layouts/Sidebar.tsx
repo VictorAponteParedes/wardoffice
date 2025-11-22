@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useAuth } from "../store/authStore";
 import { translate } from "../lang";
 import { RoutesView } from "../navigation/routes";
+import backLogo from "../assets/images/logoBack.png";
 
 
 type SidebarProps = {
@@ -130,13 +131,26 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
         } bg-[#1e212a] text-white shadow-xl sticky top-0 h-screen flex flex-col transition-all duration-300 ease-in-out z-50`}
     >
       {/* Logo Area */}
-      <div className="p-6 flex items-center gap-3 mb-2">
-        <div className="bg-blue-600 p-2 rounded-lg">
-          <Church className="w-6 h-6 text-white" />
+      {/* Logo Area - Fondo blanco con logo oficial encima del texto */}
+      <div className=" rounded-2xl mx-4 mt-4 mb-6 shadow-lg overflow-hidden">
+        <div className="flex flex-col items-center py-8 px-6">
+
+          {/* Logo oficial (siempre visible) */}
+          {/* <img
+            src={backLogo}
+            alt="La Iglesia de Jesucristo de los Santos de los Últimos Días"
+            className={`${isCollapsed ? "w-16" : "w-28"} h-auto transition-all duration-300`}
+          /> */}
+
+          {/* Texto solo cuando está expandido */}
+          {!isCollapsed && (
+            <div className="mt-5 text-center">
+              <h1 className="text-2xl font-bold text-white leading-tight">
+                Portal del Barrio
+              </h1>
+            </div>
+          )}
         </div>
-        {!isCollapsed && (
-          <span className="text-xl font-bold tracking-tight">WardOffice</span>
-        )}
       </div>
 
       {/* Navigation */}
