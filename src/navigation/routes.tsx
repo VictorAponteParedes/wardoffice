@@ -13,4 +13,9 @@ export const RoutesView = {
   topicsCreate: "/topics/create",
   topicsEdit: "/topics/edit/:id",
   topicsDetail: "/topics/:id",
+  callings: "/callings",
+  attendance: "/attendance",
+  assignTalk: "/assign-talk",
+  events: "/events",
+  settings: "/settings",
 };
