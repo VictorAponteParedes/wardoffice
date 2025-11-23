@@ -1,13 +1,14 @@
 // src/store/authStore.ts
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { AuthService } from '../services/auth';
+
+const authService = new AuthService();
 
 type User = {
     id: string;
     email: string;
-    name: string;
     role: 'admin' | 'bishop' | 'clerk';
-    ward: string;
 };
 
 type AuthState = {
@@ -16,26 +17,6 @@ type AuthState = {
     isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => void;
-    setUser: (user: User | null) => void;
-};
-
-// Simulamos API real (cámbialo por tu backend después)
-const fakeApiLogin = (email: string, password: string): Promise<User> => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (email === "aponte@ward.org" && password === "jesus123") {
-                resolve({
-                    id: "1",
-                    email: "aponte@ward.org",
-                    name: "Victor Aponte",
-                    role: "bishop",
-                    ward: "Provo 5th Ward",
-                });
-            } else {
-                reject(new Error("Invalid credentials"));
-            }
-        }, 1200);
-    });
 };
 
 export const useAuth = create<AuthState>()(
@@ -45,19 +26,28 @@ export const useAuth = create<AuthState>()(
             token: null,
             isAuthenticated: false,
 
-            login: async (email: string, password: string) => {
+            login: async (email: string, password: string): Promise<boolean> => {
                 try {
-                    const user = await fakeApiLogin(email, password);
-                    const fakeToken = "jwt-sud-" + Date.now();
+                    const data = await authService.login(email, password); // ← aquí usamos tu service
+                    const { accessToken } = data;
+
+                    // Decodificamos el payload del JWT
+                    const payload = JSON.parse(atob(accessToken.split('.')[1]));
 
                     set({
-                        user,
-                        token: fakeToken,
+                        token: accessToken,
+                        user: {
+                            id: payload.sub,
+                            email: payload.email,
+                            role: payload.role,
+                        },
                         isAuthenticated: true,
                     });
+
                     return true;
-                } catch {
+                } catch (error) {
                     set({ user: null, token: null, isAuthenticated: false });
+                    console.error('Login failed:', error);
                     return false;
                 }
             },
@@ -65,11 +55,9 @@ export const useAuth = create<AuthState>()(
             logout: () => {
                 set({ user: null, token: null, isAuthenticated: false });
             },
-
-            setUser: (user) => set({ user }),
         }),
         {
-            name: "sud-backoffice-auth", // guarda en localStorage
+            name: 'wardoffice-auth',
         }
     )
 );
