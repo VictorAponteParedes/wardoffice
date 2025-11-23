@@ -8,6 +8,8 @@ const authService = new AuthService();
 type User = {
     id: string;
     email: string;
+    name: string;
+    lastName: string;
     role: 'admin' | 'bishop' | 'clerk';
 };
 
@@ -40,10 +42,12 @@ export const useAuth = create<AuthState>()(
                             id: payload.sub,
                             email: payload.email,
                             role: payload.role,
+                            name: payload.name,
+                            lastName: payload.lastName,
                         },
                         isAuthenticated: true,
                     });
-
+                    console.log("User logged in:", payload);
                     return true;
                 } catch (error) {
                     set({ user: null, token: null, isAuthenticated: false });
