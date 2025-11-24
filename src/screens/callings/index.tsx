@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { RoutesView } from "../../navigation/routes";
 import { useTheme } from "../../context/ThemeContext";
 import WardLayout from "../../layouts/WardLayout";
 import { CallingsTabs } from "./components/CallingsTabs";
@@ -60,7 +61,7 @@ export default function Callings() {
     };
 
     const handleView = (calling: Calling) => {
-        console.log("View calling", calling);
+        navigate(RoutesView.callingsDetail.replace(":id", calling.id.toString()));
     };
 
     return (
@@ -77,7 +78,7 @@ export default function Callings() {
                             <p className="text-gray-500">Administra los llamamientos y organizaciones del barrio.</p>
                         </div>
                         <button
-                            onClick={() => console.log("Create calling")}
+                            onClick={() => { navigate(RoutesView.callingsDetail.replace(":id", "new")) }}
                             className="flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all"
                         >
                             <Plus className="w-5 h-5" />

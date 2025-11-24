@@ -10,7 +10,7 @@ import { PasswordInput } from "../../../components/form/PasswordInput";
 import { MessageToast } from "../../../components/form/MessageToast";
 import { translate } from "../../../lang";
 import { RoutesView } from "../../../navigation/routes";
-import { sudLogo, sudBackground } from "../../../assets/index";
+import { sudLogo, sudBackground, backLogo } from "../../../assets/index";
 
 interface LoginFormData {
   email: string;
@@ -125,7 +125,11 @@ export default function LoginPage() {
           <div className="flex-1 p-10 lg:p-16">
             <div className="max-w-md mx-auto">
               <div className="text-center mb-10">
-                <Church className="w-14 h-14 text-primary mx-auto mb-4" />
+                <img
+                  src={backLogo}
+                  alt="Ward Logo"
+                  className="w-52 mx-auto mb-8 drop-shadow-2xl rounded-lg"
+                />
                 <h2 className="text-4xl font-bold text-gray-800">
                   {translate("Login.title")}
                 </h2>
