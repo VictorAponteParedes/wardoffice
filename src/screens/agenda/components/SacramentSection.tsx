@@ -1,6 +1,6 @@
 import { Music } from "lucide-react";
-import { TextInput } from "../../../components/form/TextInput";
-import { TextArea } from "../../../components/form/TextArea";
+import { TextInput } from "@/components/form/TextInput";
+import { TextArea } from "@/components/form/TextArea";
 import { motion } from "framer-motion";
 
 export const SacramentSection = () => {

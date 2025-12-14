@@ -1,7 +1,7 @@
 import { useFormContext, useFieldArray } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mic2, Plus, Trash2 } from "lucide-react";
-import { ToggleSwitch } from "../../../components/form/ToggleSwitch";
+import { ToggleSwitch } from "@/components/form/ToggleSwitch";
 
 export const ProgramSection = () => {
     const { control, watch } = useFormContext();

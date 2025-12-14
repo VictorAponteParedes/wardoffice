@@ -1,4 +1,4 @@
-import { TextArea } from "../../../components/form/TextArea";
+import { TextArea } from "@/components/form/TextArea";
 import { motion } from "framer-motion";
 
 export const WelcomeSection = () => {

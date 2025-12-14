@@ -1,7 +1,7 @@
 // src/pages/agenda/Agenda.tsx
 import { motion } from "framer-motion";
 import { useForm, FormProvider } from "react-hook-form";
-import WardLayout from "../../layouts/WardLayout";
+import WardLayout from "@/layouts/WardLayout";
 import { AgendaHeader } from "./components/AgendaHeader";
 import { GeneralInfoSection } from "./components/GeneralInfoSection";
 import { WelcomeSection } from "./components/WelcomeSection";

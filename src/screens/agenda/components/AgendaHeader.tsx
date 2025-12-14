@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { BookOpen, Sparkles } from "lucide-react";
-import { translate } from "../../../lang";
+import { BookOpen } from "lucide-react";
+import { translate } from "@/lang";
 
 export const AgendaHeader = () => {
     return (

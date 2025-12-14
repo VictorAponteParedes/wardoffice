@@ -1,5 +1,5 @@
 import { Music, User } from "lucide-react";
-import { TextInput } from "../../../components/form/TextInput";
+import { TextInput } from "@/components/form/TextInput";
 import { motion } from "framer-motion";
 
 export const ClosingSection = () => {

@@ -1,6 +1,6 @@
 import { User, Church } from "lucide-react";
-import { TextInput } from "../../../components/form/TextInput";
-import { DateInput } from "../../../components/form/inputDate";
+import { TextInput } from "@/components/form/TextInput";
+import { DateInput } from "@/components/form/inputDate";
 import { motion } from "framer-motion";
 
 export const GeneralInfoSection = () => {
