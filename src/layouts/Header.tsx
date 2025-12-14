@@ -29,7 +29,7 @@ export default function Header() {
                         {user?.name?.charAt(0) || "U"}
                     </div>
                     <span className="text-sm font-medium text-gray-700 hidden md:block">
-                        {user?.name || "User"}
+                        {user?.name || "User"} {user?.lastName || ""}
                     </span>
                     <button className="p-1 text-gray-400 hover:text-gray-600 transition-colors">
                         <MoreVertical className="w-4 h-4" />
