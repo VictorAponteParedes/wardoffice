@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Save, X } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 
 import { useTheme } from "../../context/ThemeContext";
 import { useTopics } from "../../hooks/useTopics";
@@ -12,7 +12,7 @@ export default function TopicForm() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { isDark } = useTheme();
-    const { getTopic, loading } = useTopics();
+    const { getTopic, createTopic, updateTopic, loading } = useTopics();
 
     const [formData, setFormData] = useState({
         title: "",
@@ -23,23 +23,37 @@ export default function TopicForm() {
     const isEdit = !!id;
 
     useEffect(() => {
-        if (isEdit && !loading && id) {
-            const topic = getTopic(id);
-            if (topic) {
-                setFormData({
-                    title: topic.title,
-                    description: topic.description,
-                    tags: topic.tags.join(", "),
-                });
-            }
+        if (isEdit && id) {
+            getTopic(id).then(topic => {
+                if (topic) {
+                    setFormData({
+                        title: topic.title,
+                        description: topic.description,
+                        tags: topic.tags.join(", "),
+                    });
+                }
+            });
         }
-    }, [isEdit, loading, id, getTopic]);
+    }, [isEdit, id]);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Here you would call an API to save the topic
-        console.log("Saving topic:", formData);
-        navigate(RoutesView.topics);
+
+        const payload = {
+            ...formData,
+            tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean)
+        };
+
+        try {
+            if (isEdit && id) {
+                await updateTopic(id, payload);
+            } else {
+                await createTopic(payload);
+            }
+            navigate(RoutesView.topics);
+        } catch (error) {
+            console.error("Error saving topic:", error);
+        }
     };
 
     if (loading && isEdit) {
