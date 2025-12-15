@@ -4,13 +4,13 @@ import { useAuth } from "../../../store/authStore";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useForm, FormProvider } from "react-hook-form";
-import { Church, Sun, Sparkles } from "lucide-react";
-import { TextInput } from "../../../components/form/TextInput";
-import { PasswordInput } from "../../../components/form/PasswordInput";
-import { MessageToast } from "../../../components/form/MessageToast";
-import { translate } from "../../../lang";
-import { RoutesView } from "../../../navigation/routes";
-import { sudLogo, sudBackground, backLogo } from "../../../assets/index";
+import { Sun, Sparkles } from "lucide-react";
+import { TextInput } from "@/components/form/TextInput";
+import { PasswordInput } from "@/components/form/PasswordInput";
+import { MessageToast } from "@/components/form/MessageToast";
+import { translate } from "@/lang";
+import { RoutesView } from "@/navigation/routes";
+import { sudLogo, sudBackground, backLogo } from "@/assets/index";
 
 interface LoginFormData {
   email: string;
