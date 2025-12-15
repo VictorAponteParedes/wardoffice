@@ -11,7 +11,9 @@ import {
   ChevronDown,
   UserCheck,
   ClipboardList,
-  User
+  User,
+  Menu,
+  X
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -29,6 +31,7 @@ type SidebarProps = {
 export default function Sidebar({ isCollapsed }: SidebarProps) {
   const { logout } = useAuth();
   const location = useLocation();
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   // State for expanded menus
   const [expandedMenus, setExpandedMenus] = useState<string[]>([]);
@@ -62,7 +65,7 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
   }) => {
     const hasChildren = !!children;
     const isExpanded = id ? expandedMenus.includes(id) : false;
-    const active = to ? isActive(to) : (id && children ? isChildActive([]) : false); // Simplified active check for parents
+    const active = to ? isActive(to) : false;
 
     if (hasChildren && id) {
       return (
@@ -99,22 +102,41 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
     }
 
     return (
-      <Link
-        to={to!}
-        className={`flex items-center gap-3 px-4 py-3 rounded-lg mb-1 transition-all duration-200 group ${active
-          ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20'
-          : 'text-gray-400 hover:bg-white/5 hover:text-white'
-          }`}
-      >
-        <Icon className={`w-5 h-5 ${active ? 'text-white' : 'group-hover:text-blue-400'}`} />
-        <span className="font-medium text-sm">{label}</span>
-      </Link>
+      <div className="relative mb-1">
+        <Link
+          to={to!}
+          onClick={() => setIsMobileOpen(false)}
+          className={`relative flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 group ${active
+            ? 'bg-blue-600 text-white shadow-lg shadow-blue-900/20'
+            : 'text-gray-400 hover:bg-white/5 hover:text-white'
+            }`}
+        >
+          <Icon className={`w-5 h-5 relative z-10 ${active ? 'text-white' : 'group-hover:text-blue-400'}`} />
+          <span className={`font-medium text-sm relative z-10 ${active ? 'text-white' : ''}`}>{label}</span>
+        </Link>
+
+        {/* Curved indents - Only when active */}
+        {active && (
+          <>
+            {/* Top curved indent */}
+            <div className="absolute -top-5 right-0 w-5 h-5 overflow-hidden pointer-events-none">
+              <div className="w-5 h-5 bg-blue-600 rounded-bl-full"></div>
+            </div>
+
+            {/* Bottom curved indent */}
+            <div className="absolute -bottom-5 right-0 w-5 h-5 overflow-hidden pointer-events-none">
+              <div className="w-5 h-5 bg-blue-600 rounded-tl-full"></div>
+            </div>
+          </>
+        )}
+      </div>
     );
   };
 
   const SubMenuItem = ({ label, to }: { label: string, to: string }) => (
     <Link
       to={to}
+      onClick={() => setIsMobileOpen(false)}
       className={`flex items-center gap-2 pl-12 pr-4 py-2.5 text-sm rounded-lg transition-all duration-200 ${isActive(to)
         ? 'text-blue-400 bg-blue-400/10 font-medium'
         : 'text-gray-500 hover:text-gray-300'
@@ -125,24 +147,11 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
     </Link>
   );
 
-  return (
-    <aside
-      className={`${isCollapsed ? "w-20" : "w-72"
-        } bg-[#1e212a] text-white shadow-xl sticky top-0 h-screen flex flex-col transition-all duration-300 ease-in-out z-50`}
-    >
+  const sidebarContent = (
+    <>
       {/* Logo Area */}
-      {/* Logo Area - Fondo blanco con logo oficial encima del texto */}
-      <div className=" rounded-2xl mx-4 mt-4 mb-6 shadow-lg overflow-hidden">
+      <div className="rounded-2xl mx-4 mt-4 mb-6 shadow-lg overflow-hidden">
         <div className="flex flex-col items-center py-8 px-6">
-
-          {/* Logo oficial (siempre visible) */}
-          {/* <img
-            src={backLogo}
-            alt="La Iglesia de Jesucristo de los Santos de los Últimos Días"
-            className={`${isCollapsed ? "w-16" : "w-28"} h-auto transition-all duration-300`}
-          /> */}
-
-          {/* Texto solo cuando está expandido */}
           {!isCollapsed && (
             <div className="mt-5 text-center">
               <h1 className="text-2xl font-bold text-white leading-tight">
@@ -218,13 +227,42 @@ export default function Sidebar({ isCollapsed }: SidebarProps) {
         >
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-2 pl-12 pr-4 py-2.5 text-sm text-red-400 hover:text-red-300 transition-colors"
+            className="w-full flex items-center gap-2 pl-12 pr-4 py-2.5 text-sm text-red-400 hover:text-red-300 transition-colors rounded-xl hover:bg-white/5"
           >
             <LogOut className="w-4 h-4" />
             {translate("Sidebar.signOut")}
           </button>
         </MenuItem>
       </div>
-    </aside>
+    </>
+  );
+
+  return (
+    <>
+      {/* Mobile Menu Toggle Button */}
+      <button
+        onClick={() => setIsMobileOpen(!isMobileOpen)}
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-blue-600 text-white rounded-lg shadow-lg"
+      >
+        {isMobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+      </button>
+
+      {/* Mobile Overlay */}
+      {isMobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsMobileOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`${isCollapsed ? "w-20" : "w-72"
+          } bg-[#1e212a] text-white shadow-xl sticky top-0 h-screen flex flex-col transition-all duration-300 ease-in-out z-50
+        ${isMobileOpen ? 'fixed left-0' : 'max-lg:hidden'}`}
+      >
+        {sidebarContent}
+      </aside>
+    </>
   );
 }
